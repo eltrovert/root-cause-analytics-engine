@@ -1,0 +1,18 @@
+sequenceDiagram
+  participant A as Alert
+  participant O as Orchestrator
+  participant G as Grafana MCP
+  participant C as Coordinator
+  participant S as On-call channel
+  A->>O: alert, timestamp, service context
+  O->>O: persist bounded plan
+  par metrics and logs
+    O->>G: typed metrics tool call
+    G-->>O: cited metrics finding
+  and
+    O->>G: typed Loki tool call
+    G-->>O: cited log finding
+  end
+  O->>C: structured evidence only
+  C->>S: proposal, confidence, alternatives
+  S-->>O: explicit operator action

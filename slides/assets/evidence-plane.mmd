@@ -1,0 +1,10 @@
+flowchart LR
+  A[Prometheus / Grafana alert] --> P[Incident plan]
+  P --> M[Prometheus metrics]
+  P --> L[Loki logs]
+  P --> T[Tempo traces<br/>optional]
+  M --> G[Grafana MCP]
+  L --> G
+  T --> G
+  G --> E[Cited evidence]
+  E --> H[On-call decision]

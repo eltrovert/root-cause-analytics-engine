@@ -1,0 +1,18 @@
+# macOS / system
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Go
+bin/
+
+# Temporary / local incident state
+demo/rca/state/
+*.tmp
+
+# Tooling caches
+.claude/settings.local.json
+.claude/settings.local.json.bak

@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+rule_files:
+  - /etc/prometheus/rules/rules.yml
+scrape_configs:
+  - job_name: demo-services
+    metrics_path: /metrics
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: [rca-demo]
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace]
+        action: keep
+        regex: rca-demo
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        action: keep
+        regex: checkout|orders|payments
+      - source_labels: [__meta_kubernetes_pod_container_port_name]
+        action: keep
+        regex: http
+      - source_labels: [__meta_kubernetes_pod_label_app]
+        target_label: service
+      - source_labels: [__meta_kubernetes_pod_ip, __meta_kubernetes_pod_container_port_number]
+        separator: ':'
+        target_label: __address__

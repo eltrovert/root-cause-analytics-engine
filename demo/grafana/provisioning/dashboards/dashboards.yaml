@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: RCA demo
+    folder: RCA Demo
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards

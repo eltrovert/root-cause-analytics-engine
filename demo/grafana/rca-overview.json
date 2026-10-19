@@ -1,0 +1,47 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "id": 1,
+      "targets": [{"expr": "sum by (service) (rate(http_requests_total[1m]))", "legendFormat": "{{service}}"}],
+      "title": "Request rate by service",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "percentunit"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "id": 2,
+      "targets": [{"expr": "service:http_error_ratio:rate5m", "legendFormat": "{{service}}"}],
+      "title": "5 minute error ratio",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8},
+      "id": 3,
+      "targets": [{"expr": "service:http_p95_latency_seconds:rate5m", "legendFormat": "{{service}}"}],
+      "title": "p95 latency by service",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "loki"},
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16},
+      "id": 4,
+      "targets": [{"expr": "{service=~\"checkout|orders|payments\"} |= \"\\\"status\\\":5\"", "refId": "A"}],
+      "title": "Bounded structured error logs",
+      "type": "logs"
+    }
+  ],
+  "schemaVersion": 39,
+  "tags": ["rca", "prometheus", "loki", "mcp"],
+  "time": {"from": "now-15m", "to": "now"},
+  "title": "Root Cause Analytics Demo",
+  "uid": "rca-overview",
+  "version": 2
+}

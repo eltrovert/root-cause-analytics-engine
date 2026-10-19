@@ -1,0 +1,10 @@
+flowchart LR
+  A[Login error alert<br/>frontend] --> P[Bounded incident plan]
+  P --> F[Frontend<br/>golden signals]
+  P --> AU[Auth<br/>errors + latency]
+  P --> N[Notification<br/>dependency health]
+  P --> L[Loki<br/>bounded signatures]
+  F --> S[Evidence synthesis]
+  AU --> S
+  N --> S
+  L --> S

@@ -1,0 +1,177 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments
+  labels:
+    app: payments
+spec:
+  selector:
+    app: payments
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+    spec:
+      containers:
+        - name: app
+          image: node:24-alpine
+          command: ["node", "/app/server.js"]
+          env:
+            - name: SERVICE_NAME
+              value: payments
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: app
+              mountPath: /app
+            - name: fault
+              mountPath: /config
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+      volumes:
+        - name: app
+          configMap:
+            name: demo-app
+        - name: fault
+          configMap:
+            name: payment-fault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders
+  labels:
+    app: orders
+spec:
+  selector:
+    app: orders
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: app
+          image: node:24-alpine
+          command: ["node", "/app/server.js"]
+          env:
+            - name: SERVICE_NAME
+              value: orders
+            - name: DOWNSTREAM_URL
+              value: http://payments:8080/charge
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: app
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+      volumes:
+        - name: app
+          configMap:
+            name: demo-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout
+  labels:
+    app: checkout
+spec:
+  selector:
+    app: checkout
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: checkout
+  template:
+    metadata:
+      labels:
+        app: checkout
+    spec:
+      containers:
+        - name: app
+          image: node:24-alpine
+          command: ["node", "/app/server.js"]
+          env:
+            - name: SERVICE_NAME
+              value: checkout
+            - name: DOWNSTREAM_URL
+              value: http://orders:8080/checkout
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: app
+              mountPath: /app
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+      volumes:
+        - name: app
+          configMap:
+            name: demo-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traffic-generator
+  template:
+    metadata:
+      labels:
+        app: traffic-generator
+    spec:
+      containers:
+        - name: traffic
+          image: curlimages/curl:8.12.1
+          command: ["sh", "-c", "while true; do curl -fsS http://checkout:8080/checkout >/dev/null || true; sleep 0.2; done"]

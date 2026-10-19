@@ -1,0 +1,36 @@
+namespace: rca-demo
+resources:
+  - manifests/namespace.yaml
+  - manifests/apps.yaml
+  - manifests/observability.yaml
+configMapGenerator:
+  - name: demo-app
+    files:
+      - server.js=apps/server.js
+  - name: payment-fault
+    files:
+      - fault.json=manifests/fault.normal.json
+  - name: prometheus-config
+    files:
+      - prometheus.yml=prometheus/prometheus.yml
+  - name: prometheus-rules
+    files:
+      - rules.yml=prometheus/rules.yml
+  - name: loki-config
+    files:
+      - config.yml=loki/config.yml
+  - name: promtail-config
+    files:
+      - config.yml=promtail/config.yml
+  - name: grafana-datasource
+    files:
+      - prometheus.yaml=grafana/provisioning/datasources/prometheus.yaml
+      - loki.yaml=grafana/provisioning/datasources/loki.yaml
+  - name: grafana-dashboard-provider
+    files:
+      - dashboards.yaml=grafana/provisioning/dashboards/dashboards.yaml
+  - name: rca-dashboard
+    files:
+      - rca-overview.json=grafana/rca-overview.json
+generatorOptions:
+  disableNameSuffixHash: true

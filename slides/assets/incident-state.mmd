@@ -1,0 +1,13 @@
+stateDiagram-v2
+  [*] --> received
+  received --> planned
+  planned --> collecting_evidence
+  collecting_evidence --> synthesizing
+  synthesizing --> awaiting_on_call_decision
+  awaiting_on_call_decision --> planned: investigate another hypothesis
+  awaiting_on_call_decision --> mitigation_proposed
+  mitigation_proposed --> manually_mitigated: operator records action
+  manually_mitigated --> validating
+  validating --> resolved: operator acknowledges result
+  resolved --> rca_draft_ready
+  mitigation_proposed --> automated_minor_patch: disabled
