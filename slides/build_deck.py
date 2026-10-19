@@ -1227,7 +1227,7 @@ def create_deck():
         set_font(r, size_pt=13, color=COLOR_MUTED)
 
     s22.placeholders[1].text_frame.clear()
-    tb22 = s22.shapes.add_textbox(Inches(4.6), Inches(0.9), Inches(4.8), Inches(4.0))
+    tb22 = s22.shapes.add_textbox(Inches(4.4), Inches(0.9), Inches(5.1), Inches(4.2))
     tf22 = tb22.text_frame
     tf22.word_wrap = True
 
@@ -1258,7 +1258,7 @@ def create_deck():
     p_repo.text = "\nRepo: github.com/eltrovert/root-cause-analytics-engine"
     p_repo.space_before = Pt(8)
     for r in p_repo.runs:
-        set_font(r, size_pt=13, color=COLOR_BLUE, bold=True)
+        set_font(r, size_pt=12, color=COLOR_BLUE, bold=True)
 
     add_notes(
         s22,
