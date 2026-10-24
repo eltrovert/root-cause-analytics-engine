@@ -93,17 +93,25 @@ def create_deck():
     # ====================================================
     s1 = prs.slides.add_slide(layouts[4])
     p0 = s1.placeholders[0]
-    p0.text_frame.word_wrap = True
-    p0.text_frame.text = "Building a Root Cause Analytics Engine\nwith Prometheus, Grafana, and MCP"
-    for p in p0.text_frame.paragraphs:
+    p0.width = Inches(8.8)
+    tf_0 = p0.text_frame
+    tf_0.word_wrap = True
+    tf_0.margin_left = Inches(0)
+    tf_0.margin_right = Inches(0)
+    tf_0.text = "Building a Root Cause Analytics Engine\nwith Prometheus, Grafana, and MCP"
+    for p in tf_0.paragraphs:
         disable_bullet(p)
         for r in p.runs:
-            set_font(r, font_name="Arial", size_pt=26, color=COLOR_NAVY, bold=True)
+            set_font(r, font_name="Arial", size_pt=24, color=COLOR_NAVY, bold=True)
             
     p1 = s1.placeholders[1]
-    p1.text_frame.word_wrap = True
-    p1.text_frame.text = "El Muhammad Cholid H.  ·  Founder, DevOps Focus Group\nKubernetes Community Days Indonesia 2026"
-    for p in p1.text_frame.paragraphs:
+    p1.width = Inches(8.8)
+    tf_1 = p1.text_frame
+    tf_1.word_wrap = True
+    tf_1.margin_left = Inches(0)
+    tf_1.margin_right = Inches(0)
+    tf_1.text = "El Muhammad Cholid H.  ·  Founder, DevOps Focus Group\nKubernetes Community Days Indonesia 2026"
+    for p in tf_1.paragraphs:
         disable_bullet(p)
         for r in p.runs:
             set_font(r, font_name="Arial", size_pt=14, color=COLOR_BLUE)
