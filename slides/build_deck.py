@@ -1036,15 +1036,93 @@ def create_deck():
             "Be transparent about the trade-off: this requires building clean telemetry and recording rules.",
             "In exchange, you cut token usage from 100k down to 4k tokens, drop query latency from minutes to seconds, and eliminate cluster-admin security risks."
         ],
+        transition="And this drastic token reduction transforms what AI models you can run."
+    )
+
+    # ====================================================
+    # SLIDE 19: Act 5 - Model Strategy (Layout 8: Wide Canvas)
+    # Narrative Title: "Small models win when the evidence is pre-filtered"
+    # ====================================================
+    s19 = prs.slides.add_slide(layouts[8])
+    tx19_top = s19.shapes.add_textbox(Inches(0.6), Inches(0.7), Inches(8.8), Inches(1.1))
+    tf19_t = tx19_top.text_frame
+    tf19_t.word_wrap = True
+    p19_t = tf19_t.paragraphs[0]
+    disable_bullet(p19_t)
+    p19_t.text = "Small models win when the evidence is pre-filtered"
+    p19_t.space_after = Pt(4)
+    for r in p19_t.runs:
+        set_font(r, size_pt=22, color=COLOR_NAVY, bold=True)
+    p19_s = tf19_t.add_paragraph()
+    disable_bullet(p19_s)
+    p19_s.text = "Because the gateway returns structured findings under 4k tokens, model choice becomes flexible:"
+    for r in p19_s.runs:
+        set_font(r, size_pt=13, color=COLOR_MUTED)
+
+    # 3 Strategy Comparison Cards
+    model_cards = [
+        ("Local / Air-Gapped", "Ollama / vLLM (Private)",
+         "• Runs 100% inside your Kubernetes cluster\n• Models: Llama 3.3 70B, Qwen 2.5 32B\n• Zero production telemetry leaves your VPC\n• Ideal for banking, healthcare, and air-gapped gov clouds",
+         Inches(0.6)),
+        ("Lightweight Cloud", "Fast Reasoning Tier",
+         "• Fast, cheap cloud API integration\n• Models: Claude 3.5 Haiku, GPT-4o-mini\n• Entire incident triage costs < $0.01\n• Latency: sub-second synthesis response times",
+         Inches(3.6)),
+        ("Zero-Dependency Rule", "Deterministic Fallback",
+         "• Pure Go / TypeScript heuristics engine\n• Zero LLM dependency or API keys required\n• Evaluates RED anomalies and regex signatures deterministically\n• Included in our open-source demo today",
+         Inches(6.6))
+    ]
+
+    for title, subtitle, desc, left_pos in model_cards:
+        card = s19.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left_pos, Inches(1.85), Inches(2.8), Inches(3.15))
+        card.fill.solid()
+        card.fill.fore_color.rgb = COLOR_CARD_BG
+        card.line.color.rgb = COLOR_BLUE
+        card.line.width = Pt(1.5)
+
+        tf_c = card.text_frame
+        tf_c.word_wrap = True
+        tf_c.margin_left = Inches(0.2)
+        tf_c.margin_right = Inches(0.2)
+        tf_c.margin_top = Inches(0.2)
+
+        p1 = tf_c.paragraphs[0]
+        disable_bullet(p1)
+        p1.text = title
+        p1.space_after = Pt(3)
+        for r in p1.runs:
+            set_font(r, size_pt=14, color=COLOR_NAVY, bold=True)
+
+        p2 = tf_c.add_paragraph()
+        disable_bullet(p2)
+        p2.text = subtitle
+        p2.space_after = Pt(8)
+        for r in p2.runs:
+            set_font(r, size_pt=11, color=COLOR_BLUE, bold=True)
+
+        p3 = tf_c.add_paragraph()
+        disable_bullet(p3)
+        p3.text = desc
+        for r in p3.runs:
+            set_font(r, size_pt=11, color=COLOR_TEXT)
+
+    add_notes(
+        s19,
+        goal="Clarify the model selection strategy and dispel the myth that incident AI requires giant cloud LLMs.",
+        talk_track=[
+            "When people hear 'AI incident engine', they assume you need a massive 128k context frontier model.",
+            "Because our MCP gateway pre-filters evidence down to 4k tokens, you can run small, fast models like Claude Haiku or GPT-4o-mini for less than a penny.",
+            "Even better: you can host local Llama 3.3 or Qwen 2.5 on Ollama inside your VPC—zero telemetry ever leaves your cluster.",
+            "And in our open-source repo today, the synthesis engine even has a pure deterministic rule fallback that works with zero external AI dependencies."
+        ],
         transition="And we should be equally honest about what this engine cannot do."
     )
 
     # ====================================================
-    # SLIDE 19: Act 5 - Reality Check (Layout 12)
+    # SLIDE 20: Act 5 - Reality Check (Layout 12)
     # Narrative Title: "Where this design deliberately stops"
     # ====================================================
-    s19 = prs.slides.add_slide(layouts[12])
-    p0 = s19.placeholders[0]
+    s20 = prs.slides.add_slide(layouts[12])
+    p0 = s20.placeholders[0]
     tf0 = p0.text_frame
     tf0.word_wrap = True
     tf0.clear()
@@ -1060,26 +1138,26 @@ def create_deck():
     for r in p_sub.runs:
         set_font(r, size_pt=13, color=COLOR_MUTED)
 
-    s19.placeholders[1].text_frame.clear()
-    tb19 = s19.shapes.add_textbox(Inches(4.6), Inches(0.9), Inches(4.8), Inches(4.0))
-    tf19 = tb19.text_frame
-    tf19.word_wrap = True
+    s20.placeholders[1].text_frame.clear()
+    tb20 = s20.shapes.add_textbox(Inches(4.6), Inches(0.9), Inches(4.8), Inches(4.0))
+    tf20 = tb20.text_frame
+    tf20.word_wrap = True
 
-    p_head19 = tf19.paragraphs[0]
-    disable_bullet(p_head19)
-    p_head19.text = "Hard Limits of the Engine:"
-    p_head19.space_after = Pt(10)
-    for r in p_head19.runs:
+    p_head20 = tf20.paragraphs[0]
+    disable_bullet(p_head20)
+    p_head20.text = "Hard Limits of the Engine:"
+    p_head20.space_after = Pt(10)
+    for r in p_head20.runs:
         set_font(r, size_pt=14, color=COLOR_NAVY, bold=True)
 
-    limits19 = [
+    limits20 = [
         ("Metrics give correlation, not causation", "Proving services degraded together != physical proof of bug."),
         ("Cannot fix missing telemetry", "If a service exports no RED metrics, the gateway cannot invent data."),
         ("Unmaintained dependency graphs fail", "Stale service catalogs cause the coordinator to miss cascade paths."),
         ("Not autonomous remediation", "Does not restart pods or alter routing without explicit human signoff.")
     ]
-    for title, desc in limits19:
-        p = tf19.add_paragraph()
+    for title, desc in limits20:
+        p = tf20.add_paragraph()
         set_hanging_bullet(p, indent_pts=18)
         r1 = p.add_run()
         r1.text = f"{title}: "
@@ -1090,7 +1168,7 @@ def create_deck():
         p.space_after = Pt(6)
 
     add_notes(
-        s19,
+        s20,
         goal="Earn trust with senior engineers by stating hard limitations plainly.",
         talk_track=[
             "State these upfront: correlation is never causation, and no AI can invent metrics you didn't collect.",
@@ -1101,11 +1179,11 @@ def create_deck():
     )
 
     # ====================================================
-    # SLIDE 20: Act 6 - Roadmap (Layout 12)
+    # SLIDE 21: Act 6 - Roadmap (Layout 12)
     # Narrative Title: "How to build this incrementally without boiling the ocean"
     # ====================================================
-    s20 = prs.slides.add_slide(layouts[12])
-    p0 = s20.placeholders[0]
+    s21 = prs.slides.add_slide(layouts[12])
+    p0 = s21.placeholders[0]
     tf0 = p0.text_frame
     tf0.word_wrap = True
     tf0.clear()
@@ -1121,26 +1199,26 @@ def create_deck():
     for r in p_sub.runs:
         set_font(r, size_pt=13, color=COLOR_MUTED)
 
-    s20.placeholders[1].text_frame.clear()
-    tb20 = s20.shapes.add_textbox(Inches(4.6), Inches(0.9), Inches(4.8), Inches(4.0))
-    tf20 = tb20.text_frame
-    tf20.word_wrap = True
+    s21.placeholders[1].text_frame.clear()
+    tb21 = s21.shapes.add_textbox(Inches(4.6), Inches(0.9), Inches(4.8), Inches(4.0))
+    tf21 = tb21.text_frame
+    tf21.word_wrap = True
 
-    p_head20 = tf20.paragraphs[0]
-    disable_bullet(p_head20)
-    p_head20.text = "Phased Adoption Roadmap:"
-    p_head20.space_after = Pt(10)
-    for r in p_head20.runs:
+    p_head21 = tf21.paragraphs[0]
+    disable_bullet(p_head21)
+    p_head21.text = "Phased Adoption Roadmap:"
+    p_head21.space_after = Pt(10)
+    for r in p_head21.runs:
         set_font(r, size_pt=14, color=COLOR_NAVY, bold=True)
 
-    phases20 = [
+    phases21 = [
         ("Phase 1: Telemetry & Rules", "Standardize RED metrics and Prometheus recording rules on tier-1 services."),
         ("Phase 2: Grafana Correlation", "Build single-pane dashboard linking metrics, Loki logs, and Tempo traces."),
         ("Phase 3: Read-Only MCP Gateway", "Wrap dashboard queries in structured, parameterized tool schemas."),
         ("Phase 4: State Machine & RCA", "Add incident state machine, hypothesis queue, and chat approval gates.")
     ]
-    for ph, desc in phases20:
-        p = tf20.add_paragraph()
+    for ph, desc in phases21:
+        p = tf21.add_paragraph()
         set_hanging_bullet(p, indent_pts=18)
         r1 = p.add_run()
         r1.text = f"{ph}: "
@@ -1151,7 +1229,7 @@ def create_deck():
         p.space_after = Pt(6)
 
     add_notes(
-        s20,
+        s21,
         goal="Provide a pragmatic, low-risk adoption path.",
         talk_track=[
             "Do not start by deploying AI agents.",
@@ -1162,16 +1240,16 @@ def create_deck():
     )
 
     # ====================================================
-    # SLIDE 21: Act 6 - Core Takeaways (Layout 16: Big Center Slide)
+    # SLIDE 22: Act 6 - Core Takeaways (Layout 16: Big Center Slide)
     # Narrative Title: "Three principles to take back to your team"
     # ====================================================
-    s21 = prs.slides.add_slide(layouts[16])
-    p21_c = s21.placeholders[0]
-    tf21 = p21_c.text_frame
-    tf21.word_wrap = True
-    tf21.clear()
+    s22 = prs.slides.add_slide(layouts[16])
+    p22_c = s22.placeholders[0]
+    tf22 = p22_c.text_frame
+    tf22.word_wrap = True
+    tf22.clear()
     
-    p = tf21.paragraphs[0]
+    p = tf22.paragraphs[0]
     disable_bullet(p)
     p.text = "Three principles to take back to your team"
     p.space_after = Pt(14)
@@ -1184,7 +1262,7 @@ def create_deck():
         ("3. Persist the plan and the state", "Keep humans in control with auditable state transitions, visible hypotheses, and explicit approval gates.")
     ]
     for title, desc in takeaways:
-        p = tf21.add_paragraph()
+        p = tf22.add_paragraph()
         set_hanging_bullet(p, indent_pts=16)
         r1 = p.add_run()
         r1.text = f"{title}: "
@@ -1195,7 +1273,7 @@ def create_deck():
         p.space_after = Pt(8)
 
     add_notes(
-        s21,
+        s22,
         goal="Deliver three clear takeaways slowly and deliberately.",
         talk_track=[
             "1. Put Grafana at the evidence plane: don't build integrations on raw Prometheus and Loki directly.",
@@ -1206,11 +1284,11 @@ def create_deck():
     )
 
     # ====================================================
-    # SLIDE 22: Act 6 - The Demo (Layout 12)
+    # SLIDE 23: Act 6 - The Demo (Layout 12)
     # Narrative Title: "Try the entire stack locally on your machine"
     # ====================================================
-    s22 = prs.slides.add_slide(layouts[12])
-    p0 = s22.placeholders[0]
+    s23 = prs.slides.add_slide(layouts[12])
+    p0 = s23.placeholders[0]
     tf0 = p0.text_frame
     tf0.word_wrap = True
     tf0.clear()
@@ -1226,34 +1304,34 @@ def create_deck():
     for r in p_sub.runs:
         set_font(r, size_pt=13, color=COLOR_MUTED)
 
-    s22.placeholders[1].text_frame.clear()
-    tb22 = s22.shapes.add_textbox(Inches(4.4), Inches(0.9), Inches(5.1), Inches(4.2))
-    tf22 = tb22.text_frame
-    tf22.word_wrap = True
+    s23.placeholders[1].text_frame.clear()
+    tb23 = s23.shapes.add_textbox(Inches(4.4), Inches(0.9), Inches(5.1), Inches(4.2))
+    tf23 = tb23.text_frame
+    tf23.word_wrap = True
 
-    p_head22 = tf22.paragraphs[0]
-    disable_bullet(p_head22)
-    p_head22.text = "Everything in this talk is runnable in the demo repo:"
-    p_head22.space_after = Pt(10)
-    for r in p_head22.runs:
+    p_head23 = tf23.paragraphs[0]
+    disable_bullet(p_head23)
+    p_head23.text = "Everything in this talk is runnable in the demo repo:"
+    p_head23.space_after = Pt(10)
+    for r in p_head23.runs:
         set_font(r, size_pt=14, color=COLOR_NAVY, bold=True)
 
-    items22 = [
+    items23 = [
         "Prometheus recording rules & alert configurations",
         "Grafana correlation dashboard with RED metric panels",
         "Read-only Model Context Protocol (MCP) gateway server",
         "Contained fault-injection switch to trigger synthetic incidents",
         "Step-by-step Makefile: make up && make fault"
     ]
-    for it in items22:
-        p = tf22.add_paragraph()
+    for it in items23:
+        p = tf23.add_paragraph()
         set_hanging_bullet(p, indent_pts=18)
         p.text = it
         p.space_after = Pt(6)
         for r in p.runs:
             set_font(r, size_pt=12, color=COLOR_TEXT)
 
-    p_repo = tf22.add_paragraph()
+    p_repo = tf23.add_paragraph()
     disable_bullet(p_repo)
     p_repo.text = "\nRepo: github.com/eltrovert/root-cause-analytics-engine"
     p_repo.space_before = Pt(8)
@@ -1261,22 +1339,22 @@ def create_deck():
         set_font(r, size_pt=12, color=COLOR_BLUE, bold=True)
 
     add_notes(
-        s22,
+        s23,
         goal="Point audience to the working implementation.",
         talk_track=[
             "Everything shown today is open source: Prometheus configs, Grafana dashboards, and the MCP gateway.",
             "Run 'make up' to start the stack, and 'make fault' to simulate a real latency spike.",
-            "Keep this URL on screen for Q&A."
+            "Keep https://github.com/eltrovert/root-cause-analytics-engine on screen for Q&A."
         ],
         transition="Thank you everyone!"
     )
 
     # ====================================================
-    # SLIDE 23: Thank You Slide (Template layout 17: THANK YOU)
+    # SLIDE 24: Thank You Slide (Template layout 17: THANK YOU)
     # ====================================================
-    s23 = prs.slides.add_slide(layouts[17])
+    s24 = prs.slides.add_slide(layouts[17])
     add_notes(
-        s23,
+        s24,
         goal="Close smoothly and open for Q&A.",
         talk_track=[
             "Thank the KCD Indonesia organizers, sponsors, and attendees.",

@@ -183,7 +183,18 @@
 
 ---
 
-### Slide 19: Where this design deliberately stops
+### Slide 19: Small models win when the evidence is pre-filtered
+- **GOAL:** Clarify the model selection strategy and dispel the myth that incident AI requires giant cloud LLMs.
+- **TALK TRACK:**
+  - When people hear 'AI incident engine', they assume you need a massive 128k context frontier model.
+  - Because our MCP gateway pre-filters evidence down to 4k tokens, you can run small, fast models like Claude Haiku or GPT-4o-mini for less than a penny.
+  - Even better: you can host local Llama 3.3 or Qwen 2.5 on Ollama inside your VPC—zero telemetry ever leaves your cluster.
+  - And in our open-source repo today, the synthesis engine even has a pure deterministic rule fallback that works with zero external AI dependencies.
+- **TRANSITION:** "And we should be equally honest about what this engine cannot do."
+
+---
+
+### Slide 20: Where this design deliberately stops
 - **GOAL:** Earn trust with senior engineers by stating hard limitations plainly.
 - **TALK TRACK:**
   - State these upfront: correlation is never causation, and no AI can invent metrics you didn't collect.
@@ -193,7 +204,7 @@
 
 ---
 
-### Slide 20: How to build this incrementally without boiling the ocean
+### Slide 21: How to build this incrementally without boiling the ocean
 - **GOAL:** Provide a pragmatic, low-risk adoption path.
 - **TALK TRACK:**
   - Do not start by deploying AI agents.
@@ -203,7 +214,7 @@
 
 ---
 
-### Slide 21: Three principles to take back to your team
+### Slide 22: Three principles to take back to your team
 - **GOAL:** Deliver three clear takeaways slowly and deliberately.
 - **TALK TRACK:**
   - 1. Put Grafana at the evidence plane: don't build integrations on raw Prometheus and Loki directly.
@@ -213,7 +224,7 @@
 
 ---
 
-### Slide 22: Try the entire stack locally on your machine
+### Slide 23: Try the entire stack locally on your machine
 - **GOAL:** Point audience to the working implementation.
 - **TALK TRACK:**
   - Everything shown today is open source: Prometheus configs, Grafana dashboards, and the MCP gateway.
@@ -223,7 +234,7 @@
 
 ---
 
-### Slide 23: Thank You
+### Slide 24: Thank You
 - **GOAL:** Close smoothly and open for Q&A.
 - **TALK TRACK:**
   - Thank the KCD Indonesia organizers, sponsors, and attendees.

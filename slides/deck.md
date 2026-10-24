@@ -444,6 +444,44 @@ The draft assembles itself from the alert, the evidence, the hypotheses, the act
 
 ---
 
+# Small models win when evidence is pre-filtered
+
+Because the gateway returns structured findings under 4k tokens, model choice becomes flexible across deployment tiers:
+
+<div class="cols">
+<div>
+
+### Local / Air-Gapped (Private)
+- Runs 100% inside your Kubernetes cluster (Ollama / vLLM)
+- Models: Llama 3.3 70B, Qwen 2.5 32B
+- Zero production telemetry leaves your VPC
+- Ideal for banking, healthcare, and air-gapped environments
+
+</div>
+<div>
+
+### Lightweight Cloud (Fast Reasoning)
+- Fast, cheap cloud API integration
+- Models: Claude 3.5 Haiku, GPT-4o-mini
+- Entire incident triage costs < $0.01 per run
+- Sub-second structured synthesis response times
+
+</div>
+<div>
+
+### Zero-Dependency (Deterministic Fallback)
+- Pure Go / TypeScript heuristics engine
+- Zero LLM dependency or API keys required
+- Evaluates RED anomalies and regex signatures deterministically
+- Included in our open-source demo today
+
+</div>
+</div>
+
+<!-- Speaker notes, 1 minute: When people hear AI incident engine, they assume you need a massive 128k frontier model. Because our MCP gateway pre-filters evidence down to 4k tokens, you can run small models like Claude Haiku for pennies, or host local Llama 3.3 on Ollama inside your VPC so zero telemetry leaves your cluster. Our repo even includes a deterministic rule fallback that needs no AI API keys at all. -->
+
+---
+
 # What it cannot do
 
 - Metrics give you correlation. Causation is still your job.
